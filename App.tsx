@@ -1,28 +1,30 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import React, { useEffect } from 'react';
 
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
+import i18n, { initI18n } from '@i18n';
+import { store } from '@store/store';
+import { I18nextProvider } from 'react-i18next';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { Provider } from 'react-redux';
 
-function App() {
-  const isDarkMode = useColorScheme() === 'dark';
+import Layout from './src/Layout';
+
+const App = (): React.JSX.Element => {
+  useEffect(() => {
+    initI18n();
+  }, []);
 
   return (
-    <View style={styles.container}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <NewAppScreen templateFileName="App.tsx" />
-    </View>
+    <GestureHandlerRootView>
+      <I18nextProvider i18n={i18n}>
+        <Provider store={store}>
+          <SafeAreaProvider>
+            <Layout />
+          </SafeAreaProvider>
+        </Provider>
+      </I18nextProvider>
+    </GestureHandlerRootView>
   );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
+};
 
 export default App;
